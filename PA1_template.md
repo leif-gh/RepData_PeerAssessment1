@@ -1,23 +1,20 @@
 #Reproducible Research Assignment 1#
-####Leif Olausson####
-####February 2015####
+#####Leif Olausson, February 2015#####
 
 ###Background###
 This assignment makes use of data from a personal activity monitoring device. This device collects data at 5 minute intervals through out the day. The data consists of two months of data from an anonymous individual collected during the months of October and November, 2012 and include the number of steps taken in 5 minute intervals each day.
 
 ###Data###
-The data is available at:
+The dataset is available at:
 https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip
-
-[Download here](Data available at https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip)
 
 Variables in the data: steps, date, 5 minute intervals. Dates correspond to October and November 2012. The 5 minute intervals bring the number of rows to 17568.
 
 ###Questions/tasks###
-The assignment tasks are reported below under headings referring to each task.
+The assignment tasks are reported below under headings referring to each task.The code chunks are in this report to high degree self contained for easy reading and interpretation (i.e. there is a degree of repetition of code in the chunks not needed from a strict functional point of view).
 
 ###Loading and preprocessing the data###
-The loading and processing of the data is reported integrated for each task below. However to also report code for the basic task of loading and preparing a data frame table the following code is shown.
+The loading and processing of the data is reported and integrated for each task below. However to also report code for the basic task of loading and preparing a data frame table the following code is shown.
 
 Loading package for managing the data
 
@@ -29,7 +26,7 @@ Loading data and showing first 6 rows of data frame.
 
 ```r
 ## Get and manage the data using package dplyr
-## Data available at https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip
+## Data available at https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip downloaded into the working directory and loaded from there (i.e. read.csv).
   acti <- read.csv("./activity.csv")   # Original data - activity file
   act <-  tbl_df(acti)                 # Data frame table for dplyr applications
   head(act)
@@ -57,7 +54,7 @@ Calculating the total number of steps each date. Showing first six days.
 ```r
 ## Total number of steps per day: mean, median and histogram
 ## Get and manage the data using package dplyr
-## Data available at https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip
+## Data available at https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip downloaded into the working directory and loaded from there (i.e. read.csv).
   acti <- read.csv("./activity.csv")
   act <-  tbl_df(acti)
   act_by_date  <-  group_by(act,  date)
@@ -107,13 +104,13 @@ Here is the histogram of total number of steps per day over the observation peri
 ![plot of chunk histogram](figure/histogram-1.png) 
 
 ###Average daily activity pattern###
-Calculation of average number of steps per five minute interval as mean across all days disregarding missing values.Showing the result as a time series line plot.
+Calculation of average number of steps per five minute interval as mean across all days disregarding missing values. Showing the result as a time series line plot.
 
 ```r
 ## Average number of steps per five minute interval as mean across all days 
 ## disregarding missing values
 ## Get and manage the data using package dplyr
-## Data available at https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip
+## Data available at https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip downloaded into the working directory and loaded from there (i.e. read.csv).
     acti <- read.csv("./activity.csv")
     act <- tbl_df(acti)
     act<- filter(act, !is.na(act$steps))  
@@ -147,13 +144,13 @@ Calculating the 5-minute interval with the maximum number of steps (mean across 
 ## 1      835    206.1698
 ```
 
-###Calculation with filled in missing values###
+###Activity data with filled in missing values###
 
 Calculation of the number of missing values.
 
 ```r
 ## Get and manage the data using package dplyr
-## Data available at https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip
+## Data available at https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip downloaded into the working directory and loaded from there (i.e. read.csv).
     acti <- read.csv("./activity.csv")
     act <- tbl_df(acti)
 ## Number of missing values
@@ -174,7 +171,7 @@ New data set with missing values filled with the calculated mean for each interv
 ## Average number of steps per five minute interval as mean across all days with 
 ## missing values filled in using the calculated mean for each interval
 ## Get and manage the data using package dplyr
-## Data available at https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip
+## Data available at https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip downloaded into the working directory and loaded from there (i.e. read.csv).
     acti <- read.csv("./activity.csv")
     act <- tbl_df(acti)
 ## Average (mean) number of steps in each 5 min interval (NAs removed)
@@ -201,7 +198,7 @@ New data set with missing values filled with the calculated mean for each interv
 ## 6 2.0943396 2012-10-01       25
 ```
 
-Histogram of the total number of steps per day during the two month period. Missing values filled in. Compare with histogram shown earlier reflecting the case where the missing values are removed (i.e. not substituted).
+Histogram of the total number of steps per day during the two month period. Missing values are filled in. Compare with histogram shown earlier reflecting the case where the missing values are removed (i.e. not substituted).
 
 ```r
 ## Number of steps each day and calculation of mean and median of steps per day with missing       
@@ -240,3 +237,59 @@ Calculating the mean and median of the total steps taken per day.
 ```
 
 **Comment:** The mean and median values are in practical terms very close to the values obtained for the case where the missing values were removed. The difference is seen in the histograms. The change is that the cases (days) with high/maximum activity are more pronounced when the missing values are filled in with values reflecting the mean numbers from the case without NAs.
+
+###Activity patterns on weekdays and weekends###
+
+This part describes establishing two data frames containing the daily activity levels (steps) for weekdays and weekends respectively. Missing values in original data are replaced with mean values (for each interval) obtained from the original set of data with NAs removed. The resultiing activity patterns are for comparison displayed in a panel plot.
+
+```r
+## Comparison of activity pattern between weekdays and weekends
+## with missing values filled in using the calculated mean for each interval
+## Get and manage the data using package dplyr
+## Data available at https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip downloaded into the working directory and loaded from there (i.e. read.csv).
+      acti <- read.csv("./activity.csv")
+      act <- tbl_df(acti)
+## Average (mean) number of steps in each 5 min interval
+      act_no_na<- filter(act, !is.na(act$steps))
+      act_by_int <- group_by(act_no_na, interval)
+      mean_step_int <- summarize(act_by_int, mean(steps))
+      act_comb <- cbind(act, mean_step_int)
+      act_comb[is.na(act_comb$"steps")==TRUE, 1] <- act_comb[is.na(act_comb$"steps")==TRUE, 5]
+      new_act <- tbl_df(act_comb)
+      new_act <- new_act[, 1:3]
+## Identify factor weekdays and weekends and group by factor and interval
+      Sys.setlocale("LC_TIME", "English")
+```
+
+```
+## [1] "English_United States.1252"
+```
+
+```r
+      new_act[, 2] <- weekdays(as.Date(new_act$date))
+      new_act[, 2] <- ifelse(new_act[, 2] == "Saturday" | new_act[, 2] == "Sunday",
+           "weekend",   "weekday")
+      new_act$date <- as.factor(new_act$date)
+      new_act_wend <- filter(new_act, date =="weekend")
+      new_act_wday <- filter(new_act, date =="weekday")
+      new_act_wend_by_int <- group_by(new_act_wend, interval)
+      new_act_wday_by_int <- group_by(new_act_wday, interval)
+## Steps per interval across all days
+      wend_mean_step_int <- summarize(new_act_wend_by_int, mean(steps))
+      wday_mean_step_int <- summarize(new_act_wday_by_int, mean(steps))
+## Panelplot of weekday and weekend patterns
+      par(mfrow = c(2, 1), mar = c(4, 4, 0, 1), oma = c(0, 0, 2, 0))
+      plot(c(0, 2400), c(0, 220), type="n",  
+            main = "",  xlab = "", ylab = "Steps")
+     text(250, 150, "Weekday", font = 2)
+     mtext("Weekday and weekend activity comparison ", font = 2)
+      lines(wday_mean_step_int)
+      plot(c(0, 2400), c(0, 220), type="n", main = "",  
+            xlab = "Hours (24 hour cycle during a two month period)",  ylab = "Steps")
+      text(250, 150, "Weekend", font = 2)
+      lines(wend_mean_step_int)
+```
+
+![plot of chunk activity comparison](figure/activity comparison-1.png) 
+
+**Comment:** One observation from the plot is that the activity pattern on weekdays is shifted to earlier hours compared to weekends (up early and early to bed). The activity level is also more evenly distributed at a higher level during daylight hours during weekends. Notable is also the peak around 9 am at weekdays.
